@@ -4,12 +4,14 @@ Minim minim;
 AudioPlayer player;
 
 
-PFont hRegular, hItalic;
+PFont hRegular, hItalic, hItalicCase;
 String trackLabel = "";
 String textLabel = "";
 boolean displayTitle = true;
 int trackDuration;
 int trackPosition;
+String trackDescription = "";
+
 
 void setup() {
   fullScreen();
@@ -17,6 +19,8 @@ void setup() {
   fill(0);
   hRegular = createFont("Helvetica", 60, false); // Regular font
   hItalic = loadFont("HelveticaItalic-60.vlw");
+  hItalicCase = createFont("HelveticaNeue-ThinItalic-22.vlw", 22, false);
+
   textFont(hRegular);
   textSize(70);
   minim = new Minim(this);
@@ -25,10 +29,10 @@ void setup() {
 void draw() {
   background(255);
   fill(0);  // Ensure text color is black
- 
-  if (displayTitle) {  
+
+  if (displayTitle) {
     textFont(createFont("Helvetica", 100));
-    text("Collective silence", 40, 120);  
+    text("Collective silence", 40, 120);
   }
 
   if (player != null && player.isPlaying()) {
@@ -46,6 +50,13 @@ void draw() {
       text(lines[i], 80, height - 525 + i * 70);  // 70 is the text size, adjust if needed
     }
   }
+
+  if (!trackDescription.equals("")) {
+    textFont(hItalicCase, 22);  // Set to italic font with a size of 40 (you can adjust this as needed)
+    float margin = width * 0.5f; // Set the starting position to the right side of the screen
+    float textWidth = width * 0.4f; // Adjust this value to control the width of the text box
+    text(trackDescription, margin, 240, textWidth, height - 280); // The text will wrap within the specified width
+  }
 }
 
 void keyPressed() {
@@ -57,36 +68,36 @@ void keyPressed() {
 
   switch (Character.toUpperCase(key)) {
   case 'E':
-    textLabel = "Etel Adnan, Shifting the Silence, p.8."; 
-     resetSound();
+    textLabel = "Etel Adnan, Shifting the Silence, p.8.";
+    resetSound();
     break;
   case 'C':
     textLabel = "Claudia Rankine, Citizen, p.69.";
-     resetSound();
+    resetSound();
     break;
   case 'L':
     textLabel = "Solmaz Sharif, Look, p.69.";
-     resetSound();
+    resetSound();
     break;
   case 'H':
     textLabel = "Hn. Lyonga, The so-called Anglophone Problem - snapshots of a city in a predominantly English-speaking region— in the west of Cameroon.";
-     resetSound();
+    resetSound();
     break;
   case 'A':
     textLabel = "Anne Carson, Autobiography of Red. p.66,67 and 71.";
-     resetSound();
+    resetSound();
     break;
   case 'B':
     textLabel = "Bernard P. Dauenhauer, Silence, p.47.";
-     resetSound();
+    resetSound();
     break;
   case 'D':
     textLabel = "Etel Adnan, Shifting the Silence, p.51.";
-     resetSound();
+    resetSound();
     break;
   case 'W':
     textLabel = "David Wojnarowicz, Closer the Knives, In the Shadow of the American Dream, p .64,65 and 66.";
-     resetSound();
+    resetSound();
     break;
   default:
     break;
@@ -96,37 +107,42 @@ void keyPressed() {
   case '1':
     player = minim.loadFile("01_geschwister (gedicht) charlotte milsch.wav");
     trackLabel = "Geschwister by Charlotte Milsch ";
-    textLabel = "";  
+    trackDescription = "";
+    textLabel = "";
     displayTitle = true;
     break;
   case '2':
     player = minim.loadFile("Beinen.wav");
     trackLabel = "Wie sagt Schwester mit den langen Beinen by Sgl";
-    textLabel = "";  
+    trackDescription = "";
+    textLabel = "";
     displayTitle = true;
     break;
   case '3':
     player = minim.loadFile("SWEEPING.wav");
     trackLabel = "Sweeping by Hn. Lyonga ";
-    textLabel = "";  
+    trackDescription = "The sound work bears witness to the meditative, continuous practice of SWEEPING as it is done by the Bakweri people of Cameroon. It is a three-minute piece of sweeping and a lullaby. The sound piece introduces sweeping as a deliberate act of fortification that protects the body and its surroundings from the communal, historical, and ecological insecurities it is exposed to. This fortification happens in silence. Sweeping here aims to comb through the toughness and violent histories present in a space/place, to make it ready, soft, and open to visiting energies and entities. To make it a site for people to gather and rally around. Sweeping here refers to the spiritual and traditional character of a practice I was taught as a child in Cameroon.";
     displayTitle = true;
     break;
   case '4':
-    player = minim.loadFile("silence_substance");
+    player = minim.loadFile("Silence Substance.wav");
+    trackDescription = "";
     trackLabel = "Silence substance by Sylee Gore";
-    textLabel = "";  
+    textLabel = "";
     displayTitle = true;
     break;
   case '5':
     player = minim.loadFile("180923.wav");
+    trackDescription = "";
     trackLabel = "Schweigen by Inana Othman";
-    textLabel = "";  
+    textLabel = "";
     displayTitle = true;
     break;
   case '6':
-    player = minim.loadFile("Silence Dilution");
+    player = minim.loadFile("Silence Dilution.wav");
+    trackDescription = "";
     trackLabel = "Silence Dilution by Sylee Gore";
-    textLabel = "";  
+    textLabel = "";
     displayTitle = true;
     break;
   case '0':
@@ -178,11 +194,13 @@ String[] splitTextLabel(String label) {
 }
 
 void resetSound() {
-    if (player != null) {
-        player.pause();
-        player.rewind();
-    }
-    trackLabel = "";
+  if (player != null) {
+    player.pause();
+    player.rewind();
+  }
+
+  trackLabel = "";
+    trackDescription = "";
 }
 
 
